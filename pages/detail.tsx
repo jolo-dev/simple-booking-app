@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Button, Container, Grid } from '@mui/material';
 
 const Detail: NextPage = ({ children }) => {
   return (
@@ -13,6 +13,9 @@ const Detail: NextPage = ({ children }) => {
           flexDirection="column"
         >
           {children}
+          <p>
+            <Button variant="contained">Book</Button>
+          </p>
         </Box>
       </Grid>
     </Container>

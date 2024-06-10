@@ -4,7 +4,6 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Place } from '@/graphql/generated/schemaType';
-import { Box, Container, Grid } from '@mui/material';
 import Detail from '../detail';
 
 const PlacePage: NextPage = () => {
@@ -56,11 +55,12 @@ const PlacePage: NextPage = () => {
       ) : error ? (
         <h1>Error: {error.message}</h1>
       ) : place ? (
-        <div>
+        <>
           <h1>Place {place.id}</h1>
           <img src={place.mainPhoto ?? ''} alt={`Image of ${place.id}`} />
-          {place.desciption}
-        </div>
+          <p>{place.desciption}</p>
+          <p>Price: {place.priceByNight}</p>
+        </>
       ) : (
         <h1>Place not found</h1>
       )}
