@@ -1,4 +1,15 @@
-export default `type Place {
+export default `type Flight {
+  id: ID
+  origin: String
+  destination: String
+  price: Float
+}
+
+type Query {
+  flightList: [Flight]
+  flight(id: ID): Flight
+}
+ type Place {
   id: ID
   owner: User
   desciption: String

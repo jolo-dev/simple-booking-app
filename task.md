@@ -1,3 +1,5 @@
+> [RESULTS](#result) below
+
 Requirement:
 
 1. Utilize GraphQL to fetch a list of places, which has to be displayed in a row.
@@ -12,3 +14,23 @@ Submission:
 1. Please send us a github repo link with the solution.
 2. Note how much time you spend on the task.
 3. Did you take any short cuts, what would you do differently if you had more time for the assigment?
+
+## Result
+
+### Time
+
+1. 20min
+2. 1h 30min
+3. 40min
+4. 1h
+
+### Enhancements
+
+- Splitting into Components
+- For some reasons, I couldn't set up TailwindCSS with [DaisyUI](https://daisyui.com/) 🤔 thus went for [MUI](https://mui.com/material-ui/all-components/) --> I googled "React Component Library"
+- Add testing
+- Create unified layout to avoid Duplication and apply KISS
+- Make more use of Typescript
+- For some reason, my compiler is off. It shows error when using MUI
+- Replace Prettier with [BiomeJS](https://biomejs.dev/) --> it has also Linting!
+- Replace Yarn with [PNPM](https://pnpm.io/) --> Your hard drive will thank it

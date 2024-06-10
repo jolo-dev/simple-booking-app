@@ -1,10 +1,68 @@
+import Link from 'next/link';
 import type { NextPage } from 'next';
-
 import Head from 'next/head';
-
+import { useEffect, useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
 import styles from '@/styles/Home.module.css';
+import { Flight, Place } from '@/graphql/generated/schemaType';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import CardMedia from '@mui/material/CardMedia';
+import { client } from '@/lib/apollo-client';
 
-const Home: NextPage = () => {
+const Home: NextPage = (): JSX.Element => {
+  const [places, setPlaces] = useState<Place[]>([]); // Initialize state with null
+  const [flights, setFlights] = useState<Flight[]>([]); // Initialize state with null
+  const placeList = gql`
+    query Places {
+      placeList {
+        id
+        desciption
+        mainPhoto
+        photos
+        priceByNight
+      }
+    }
+  `;
+
+  const flightList = gql`
+    query Flights {
+      flightList {
+        id
+        destination
+        origin
+        price
+      }
+    }
+  `;
+
+  const placesData = useQuery(placeList, {
+    client,
+  });
+
+  const flightData = useQuery(flightList, {
+    client,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setPlaces(placesData.data.placeList); // Update state with the fetched data
+        setFlights(flightData.data.flightList);
+      } catch (error) {
+        console.error('Failed to fetch places:', error);
+      }
+    };
+
+    fetchData();
+  }, [placesData.data, flightData.data]); // Empty dependency array means this effect runs once on mount
+
+  if (!places) {
+    return <div>Loading...</div>; // Show loading indicator while data is being fetched
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,8 +71,57 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>Hola</main>
-
+      <Container maxWidth="xl">
+        <h1>Simple Booking App</h1>
+        <Grid height={'80vh'} display="flex" justifyContent="center" alignItems="center" container>
+          {places.map((place) => (
+            <Grid
+              item
+              xs={4}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              key={place.id}
+            >
+              <Link href={`/place/${place.id}`} key={place.id}>
+                <Card sx={{ width: 300 }} key={place.id}>
+                  <CardMedia sx={{ height: 140 }} image={place.mainPhoto} title="green iguana" />
+                  <CardContent>
+                    <p>{place.desciption}</p>
+                    <p>{place.priceByNight}€</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            </Grid>
+          ))}
+          {flights.map((flight) => (
+            <Grid
+              item
+              xs={4}
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              key={flight.id}
+            >
+              <Link href={`/flight/${flight.id}`} key={flight.id}>
+                <Card sx={{ width: 300 }} key={flight.id}>
+                  <CardMedia
+                    sx={{ height: 140 }}
+                    image="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    title="green iguana"
+                  />
+                  <CardContent>
+                    <p>
+                      From: {flight.origin} to {flight.destination}
+                    </p>
+                    <p>{flight.price}€</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
       <footer className={styles.footer}></footer>
     </div>
   );

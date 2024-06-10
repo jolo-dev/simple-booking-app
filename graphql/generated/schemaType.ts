@@ -12,6 +12,14 @@ export type Scalars = {
   Float: number;
 };
 
+export type Flight = {
+  __typename?: 'Flight';
+  destination?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  origin?: Maybe<Scalars['String']>;
+  price?: Maybe<Scalars['Float']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPlace?: Maybe<Place>;
@@ -47,11 +55,18 @@ export type Place = {
 
 export type Query = {
   __typename?: 'Query';
+  flight?: Maybe<Flight>;
+  flightList?: Maybe<Array<Maybe<Flight>>>;
   place?: Maybe<Place>;
   placeList?: Maybe<Array<Maybe<Place>>>;
   reviewByUser?: Maybe<Array<Maybe<Review>>>;
   user: User;
   userList: Array<User>;
+};
+
+
+export type QueryFlightArgs = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 
